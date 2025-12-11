@@ -52,11 +52,6 @@ Pour mettre en place l'environnement de développement local, suivez ces étapes
     # .\venv\Scripts\Activate.ps1
     ```
 
-3.  **Installer les Dépendances Python**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
 ### 2. Configuration de la Base de Données
 
 Le projet est configuré pour se connecter à la base de données nommée `projet_pneu`.
