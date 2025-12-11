@@ -1,23 +1,23 @@
 # ----------------------------------------------------------------------
-# 1. Dossiers et Fichiers d'Environnement Virtuel
+# 1. Environnements Virtuels
 # ----------------------------------------------------------------------
 # L'environnement virtuel est spécifique à l'utilisateur et ne doit pas être partagé.
 venv/
 .venv/
 env/
-/bin/
-/include/
-/lib/
-/share/
+bin/
+include/
+lib/
+share/
 
 # ----------------------------------------------------------------------
 # 2. Fichiers générés par Python
 # ----------------------------------------------------------------------
-# Fichiers de cache générés pour accélérer le chargement des modules.
+# Cache et fichiers compilés
 __pycache__/
 *.pyc
 
-# Distribution package
+# Packages et distributions
 *.egg
 *.whl
 *.egg-info/
@@ -25,27 +25,31 @@ build/
 dist/
 
 # ----------------------------------------------------------------------
-# 3. Fichiers de Logs et Fichiers Temporaires
+# 3. Fichiers temporaires et logs
 # ----------------------------------------------------------------------
 *.log
 tmp/
 .temp/
 
 # ----------------------------------------------------------------------
-# 4. Fichiers de Sécurité/Configuration Locale
+# 4. Fichiers de configuration locale / sécurité
 # ----------------------------------------------------------------------
-# N'incluez jamais de clés secrètes, de mots de passe, ou d'informations
-# de connexion spécifiques à votre machine.
+# Ne pas inclure les clés secrètes ou les configs locales
 .flaskenv
 .env
 instance/
 config.py
 
 # ----------------------------------------------------------------------
-# 5. Fichiers Spécifiques au Système d'Exploitation
+# 5. Fichiers spécifiques au système
 # ----------------------------------------------------------------------
 # macOS
 .DS_Store
 
 # Windows
 Thumbs.db
+
+# ----------------------------------------------------------------------
+# 6. Fichiers et dossiers d'IDE
+# ----------------------------------------------------------------------
+.idea/
