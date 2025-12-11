@@ -8,7 +8,7 @@ L'interface permet de gérer les types de pneus, les articles en stock, d'appliq
 
 ## Démonstration en Ligne
 
-Le site est déployé et accessible pour consultation :
+Le site est déployé et accessible pour consulter :
 
 [**Accéder au site Gestion des Pneus**](https://valb04.pythonanywhere.com/)
 
