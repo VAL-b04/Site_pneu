@@ -72,7 +72,6 @@ Le projet est configuré pour se connecter à la base de données nommée `proje
 2.  Dans la console MySQL, créez la base de données :
     ```sql
     CREATE DATABASE projet_pneu;
-    USE projet_pneu;
     ```
 
 ### 3. Lancement de l'Application
