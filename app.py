@@ -8,16 +8,15 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
 
-# mysql --user=valentin  --password=valentin --host=ASUSVAL.local --database=bdd_projet_pneu
-# mysql --user=valentin --password=valentin --host=127.0.0.1 --database=bdd_projet_pneu
+# mysql --user=??? --password=??? --host=localhost --database=???
 
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
-            host="127.0.0.1",
-            user="valentin",
-            password="valentin",
-            database="bdd_projet_pneu",
+            host="localhost",
+            user="???",
+            password="???",
+            database="???",
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor,
         )
