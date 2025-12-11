@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Types de pneus</title>
+
+    {% include('_nav.html') %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Types de pneus</h2>
+    <br>
+    <a href="/type-pneu/add" class="btn btn-success mb-3">Ajouter un type</a>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Libellé</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if types_pneu | length >= 1 %}
+            {% for ligne in types_pneu %}
+           <tr>
+               <td><span class="badge rounded-pill" style="background-color:#008427; color:white;">{{ ligne.id }}</span></td>
+               <td>{{ ligne.libelleType }}</td>
+               <td>
+                   <a href="{{ url_for('edit_type_pneu', id=ligne.id) }}" class="btn btn-sm btn-warning me-2">Éditer</a>
+                   <form action="{{ url_for('delete_type_pneu') }}" method="post" style="display:inline;">
+                       <input type="hidden" name="id" value="{{ ligne.id }}">
+                       <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                   </form>
+               </td>
+           </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">Aucun type de pneu disponible</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

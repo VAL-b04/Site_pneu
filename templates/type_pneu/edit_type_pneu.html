@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Modifier un type de pneu</title>
+
+    {% include('_nav.html') %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Modifier un type de pneu</h2>
+    
+    <form method="post" action="{{ url_for('valid_edit_type_pneu') }}">
+        <input type="hidden" name="id" value="{{ type_pneu.id }}" id="id">
+
+        <div class="mb-3">
+            <label for="libelleType" class="form-label">Libellé</label>
+            <input type="text" name="libelleType" id="libelleType" class="form-control" value="{{ type_pneu.libelleType }}" required>
+        </div>
+
+        <button type="submit" name="Modifier" class="btn btn-warning me-3">Modifier</button>
+        <a href="{{ url_for('show_type_pneu') }}" class="btn btn-secondary">Retour</a>
+    </form>
+</div>
+{% endblock %}

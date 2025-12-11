@@ -1,0 +1,166 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Filtre pneus</title>
+
+    {% include('_nav.html') %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="card mb-4">
+        <div class="card-header text-center">
+            <h2 class="mb-0">Filtrer les pneus</h2>
+        </div>
+
+        <div class="card-body">
+            <form method="get" action="/pneu-velo/filtre" class="row g-3">
+
+                <div class="col-md-6 mb-4">
+                    <label for="filter_word" class="form-label fw-bold">
+                        Pneus dont le nom contient :
+                    </label>
+                    <input
+                        type="text"
+                        id="filter_word"
+                        name="filter_word"
+                        class="form-control"
+                        placeholder="Entrez un mot..."
+                        value="{{ request.args.get('filter_word', '') }}"
+                    >
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">Types des pneus :</label>
+                    <div class="border rounded p-3">
+                        <div class="row">
+
+                            {% set selected_types = request.args.getlist('filter_items') %}
+
+                            {% for t in types_pneu %}
+                            <div class="col-md-6 col-12">
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input {% if t.libelleType in ['Ville','VTT','Route','Vélo électrique','Enfant'] %}special-checkbox{% endif %}"
+                                        type="checkbox"
+                                        name="filter_items"
+                                        value="{{ t.id }}"
+                                        id="type_{{ t.id }}"
+                                        {% if t.id|string in selected_types %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="type_{{ t.id }}">
+                                        {{ t.libelleType }}
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Prix du pneu compris entre :</label>
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label for="filter_value_min" class="form-label">Minimum (€)</label>
+                            <input
+                                type="number"
+                                id="filter_value_min"
+                                name="filter_value_min"
+                                class="form-control"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                                value="{{ request.args.get('filter_value_min', '') }}"
+                            >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="filter_value_max" class="form-label">Maximum (€)</label>
+                            <input
+                                type="number"
+                                id="filter_value_max"
+                                name="filter_value_max"
+                                class="form-control"
+                                placeholder="1000.00"
+                                step="0.01"
+                                min="0"
+                                value="{{ request.args.get('filter_value_max', '') }}"
+                            >
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 me-2">
+                        <i class="fas fa-search"></i> Filtrer
+                    </button>
+                    <a href="/pneu-velo/filtre" class="btn btn-secondary btn-lg px-5">
+                        <i class="fas fa-times"></i> Effacer les filtres
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    {% if pneus %}
+    <div class="alert alert-info mb-4 d-flex justify-content-center align-items-center">
+        <span><strong>{{ pneus|length }}</strong> pneu(s) trouvé(s)</span>
+    </div>
+    {% endif %}
+
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        {% if pneus %}
+            {% for p in pneus %}
+            <div class="col">
+                <div class="card h-100 pneu-card">
+
+                    <div class="card-img-container">
+                        {% if p.image %}
+                        <img src="{{ url_for('static', filename='images/' + p.image) }}"
+                             class="card-img-top" alt="{{ p.nomPneu }}">
+                        {% else %}
+                        <img src="{{ url_for('static', filename='images/no_image.png') }}"
+                             class="card-img-top" alt="no image">
+                        {% endif %}
+                    </div>
+
+                    <hr>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-center mb-3">{{ p.nomPneu }}</h5>
+                        <p class="card-text text-center text-muted mb-2">
+                            {{ p.fabricant }} - {{ p.modelePneu }}
+                        </p>
+
+                        <div class="mt-auto">
+                            <p class="card-text text-center">
+                                <strong class="price-display">{{ p.prixPneu }} €</strong>
+                            </p>
+
+                            <div class="text-center mt-3">
+                                <a href="{{ url_for('edit_pneu_velo') }}?id={{ p.id }}" class="btn-edit-discrete">Éditer
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 d-flex justify-content-center">
+                <div class="alert alert-warning text-center" style="max-width: 600px;">
+                    <i class="fas fa-exclamation-triangle"></i> Aucun pneu ne correspond à vos critères de recherche.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    {% block title %}
+        <title>Gestion Stock</title>
+
+        {% include('_nav.html') %}
+    {% endblock %}
+
+    <link rel="icon" href="/static/images/favicon.ico">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="/static/mes_styles.css">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% endblock %}
+</head>
+<body>
+
+    <div class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for categorie, message in messages %}
+                <div role="alert" class="alert {{ categorie }} alert-dismissible fade show">
+                    <strong>Information :</strong> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block body %}
+            <div class="container mt-4">
+                <h2>Gestion des stock des pneus de vélo</h2>
+            </div>
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+    {% endblock %}
+</body>
+</html>

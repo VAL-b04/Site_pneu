@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Ajouter un type de pneu</title>
+
+    {% include('_nav.html') %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Ajouter un type de pneu</h2>
+    <br>
+    
+    <form method="post" action="/type-pneu/add">
+        <div class="mb-3">
+            <label for="libelleType" class="form-label">Libellé</label>
+            <input id="libelleType" type="text" name="libelleType" class="form-control" required>
+        </div>
+        
+        <button type="submit" name="Valider" class="btn btn-success me-3">Créer</button>
+        <a href="/type-pneu/show" class="btn btn-secondary">Retour</a>
+    </form>
+</div>
+{% endblock %}
+
+

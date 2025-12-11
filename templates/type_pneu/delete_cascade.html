@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Suppression impossible</title>
+    {% include('_nav.html') %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-danger">Suppression impossible</h2>
+    <p>
+        Le type de pneu <strong>{{ type.libelleType }}</strong> ne peut pas être supprimé car il est actuellement utilisé par les pneus suivants :
+    </p>
+
+    {% if pneus | length >= 1 %}
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Fabricant</th>
+                <th>Modèle</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pneu in pneus %}
+            <tr>
+                <td>{{ pneu.nomPneu }}</td>
+                <td>{{ pneu.fabricant or None }}</td>
+                <td>{{ pneu.modelePneu or None }}</td>
+                <td>{{ pneu.prixPneu | format_price }} €</td>
+                <td>
+                    <a href="{{ url_for('edit_pneu_velo') }}?id={{ pneu.id }}" class="btn btn-sm btn-warning me-2">Éditer</a>
+                    <form action="{{ url_for('delete_pneu_velo') }}" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="{{ pneu.id }}">
+                        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucun pneu associé.</p>
+    {% endif %}
+
+    <div class="mt-4">
+        <form method="post" action="/type-pneu/delete-cascade/{{ type.id_type_pneu }}" style="display:inline;">
+            <button type="submit" class="btn btn-danger me-2">Supprimer en cascade</button>
+        </form>
+        <a href="{{ url_for('show_type_pneu') }}" class="btn btn-secondary">Retour</a>
+    </div>
+</div>
+{% endblock %}
