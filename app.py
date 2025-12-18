@@ -8,15 +8,16 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
 
-# mysql --user=??? --password=??? --host=localhost --database=???
+# mysql --user=valentin  --password=valentin --host=ASUSVAL.local --database=bdd_projet_pneu
+# mysql --user=valentin --password=valentin --host=127.0.0.1 --database=bdd_projet_pneu
 
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
-            host="localhost",
-            user="???",
-            password="???",
-            database="???",
+            host="127.0.0.1",
+            user="valentin",
+            password="valentin",
+            database="bdd_projet_pneu",
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor,
         )
@@ -165,7 +166,7 @@ def valid_add_type_pneu():
     get_db().commit()
 
     flash(f'Type pneu ajouté : {libelle}', 'alert-success')
-    return redirect(url_for('show_type_pneu'))
+    return redirect('/type-pneu/show')
 
 
 @app.route('/type-pneu/delete', methods=['POST'])
@@ -204,7 +205,7 @@ def delete_type_pneu():
     get_db().commit()
 
     flash(f'Type de pneu supprimé, id : {id_type}', 'alert-warning')
-    return redirect(url_for('show_type_pneu'))
+    return redirect('/type-pneu/show')
 
 
 @app.route('/type-pneu/delete-cascade/<int:id_type>', methods=['POST'])
@@ -215,7 +216,7 @@ def delete_type_pneu_cascade(id_type):
     type_info = mycursor.fetchone()
     if not type_info:
         flash("Erreur : type de pneu introuvable.", "alert-danger")
-        return redirect(url_for('show_type_pneu'))
+        return redirect('/type-pneu/show')
 
     libelle_type = type_info['libelle_type']
 
@@ -226,8 +227,7 @@ def delete_type_pneu_cascade(id_type):
     get_db().commit()
 
     flash(f'Type de pneu "{libelle_type}" et tous les pneus associés ont été supprimés.', 'alert-warning')
-    return redirect(url_for('show_type_pneu'))
-
+    return redirect('/type-pneu/show')
 
 
 @app.route('/type-pneu/edit', methods=['GET'])
@@ -264,7 +264,7 @@ def valid_edit_type_pneu():
     get_db().commit()
 
     flash(f'Type modifié : {libelle}', 'alert-success')
-    return redirect(url_for('show_type_pneu'))
+    return redirect('/type-pneu/show')
 
 
 #############################
@@ -342,7 +342,7 @@ def valid_add_pneu_velo():
     get_db().commit()
 
     flash(f'Pneu ajouté : {nom}', 'alert-success')
-    return redirect(url_for('show_pneu_velo'))
+    return redirect('/pneu-velo/show')
 
 
 @app.route('/pneu-velo/delete', methods=['POST'])
@@ -361,7 +361,7 @@ def delete_pneu_velo():
     get_db().commit()
 
     flash(f'Pneu supprimé : {nom}, id : {id}', 'alert-warning')
-    return redirect(url_for('show_pneu_velo'))
+    return redirect('/pneu-velo/show')
 
 
 @app.route('/pneu-velo/edit', methods=['GET'])
@@ -431,7 +431,7 @@ def valid_edit_pneu_velo():
     get_db().commit()
 
     flash(f'Pneu modifié : {nom}', 'alert-success')
-    return redirect(url_for('show_pneu_velo'))
+    return redirect('/pneu-velo/show')
 
 
 #############################
