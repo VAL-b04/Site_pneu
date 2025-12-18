@@ -122,10 +122,10 @@
 
                     <div class="card-img-container">
                         {% if p.image %}
-                        <img src="{{ url_for('static', filename='images/' + p.image) }}"
+                        <img src="/static/images/{{ p.image }}"
                              class="card-img-top" alt="{{ p.nomPneu }}">
                         {% else %}
-                        <img src="{{ url_for('static', filename='images/no_image.png') }}"
+                        <img src="/static/images/no_image.png"
                              class="card-img-top" alt="no image">
                         {% endif %}
                     </div>
@@ -144,7 +144,7 @@
                             </p>
 
                             <div class="text-center mt-3">
-                                <a href="{{ url_for('edit_pneu_velo') }}?id={{ p.id }}" class="btn-edit-discrete">Éditer
+                                <a href="/pneu-velo/edit?id={{ p.id }}" class="btn-edit-discrete">Éditer
                                 </a>
                             </div>
                         </div>

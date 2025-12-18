@@ -11,7 +11,7 @@
     <h2>Modifier un pneu</h2>
     <br>
     
-    <form method="post" action="{{ url_for('valid_edit_pneu_velo') }}">
+    <form method="post" action="/pneu-velo/edit">
         <input type="hidden" name="id" value="{{ pneu.id }}" id="id">
         <div class="col-md-8 mb-3">
             <div class="col-md-6">
@@ -67,7 +67,7 @@
 
         <div class="mt-3">
             <button type="submit" class="btn btn-warning me-3">Modifier</button>
-            <a href="{{ url_for('show_pneu_velo') }}" class="btn btn-secondary">Retour</a>
+            <a href="/pneu-velo/show" class="btn btn-secondary">Retour</a>
         </div>
     </form>
 </div>
