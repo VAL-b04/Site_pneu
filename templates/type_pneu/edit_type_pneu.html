@@ -10,7 +10,7 @@
 <div class="container mt-4">
     <h2>Modifier un type de pneu</h2>
     
-    <form method="post" action="{{ url_for('valid_edit_type_pneu') }}">
+    <form method="post" action="/type-pneu/edit">
         <input type="hidden" name="id" value="{{ type_pneu.id }}" id="id">
 
         <div class="mb-3">
@@ -19,7 +19,7 @@
         </div>
 
         <button type="submit" name="Modifier" class="btn btn-warning me-3">Modifier</button>
-        <a href="{{ url_for('show_type_pneu') }}" class="btn btn-secondary">Retour</a>
+        <a href="/type-pneu/show" class="btn btn-secondary">Retour</a>
     </form>
 </div>
 {% endblock %}
