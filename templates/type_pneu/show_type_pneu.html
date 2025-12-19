@@ -17,6 +17,7 @@
             <tr>
                 <th>ID</th>
                 <th>Libellé</th>
+                <th>Nombre d'utilisations</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
            <tr>
                <td><span class="badge rounded-pill" style="background-color:#008427; color:white;">{{ ligne.id }}</span></td>
                <td>{{ ligne.libelleType }}</td>
+               <td><span class="badge rounded-pill" style="background-color:#d40118; color:white;">{{ ligne.nbUtilisations }}</span></td>
                <td>
                    <a href="/type-pneu/edit?id={{ ligne.id }}" class="btn btn-sm btn-warning me-2">Éditer</a>
                    <form action="/type-pneu/delete" method="post" style="display:inline;">
@@ -37,7 +39,7 @@
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="3" class="text-center text-muted">Aucun type de pneu disponible</td>
+                <td colspan="4" class="text-center text-muted">Aucun type de pneu disponible</td>
             </tr>
         {% endif %}
         </tbody>
