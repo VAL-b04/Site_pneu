@@ -33,7 +33,7 @@
                    <td>{{ p.nomPneu }}</td>
                    <td>{{ p.fabricant }}</td>
                    <td>{{ p.modelePneu }}</td>
-                   <td><span class="badge rounded-pill" style="background-color:#d40118; color:white;">{{ p.typePneu_id }}</span></td>
+                   <td><span class="badge rounded-pill" style="background-color:#d40118; color:white;">{{ p.typePneu_id }}</span> {{ p.libelleType }}</td>
                    <td>{{ p.prixPneu | format_price }} €</td>
                    <td>
                        {% if p.image %}

@@ -1,83 +1,99 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    <title>Statistiques Stock</title>
-    {% include('_nav.html') %}
+<title>Statistiques Stock</title>
+{% include('_nav.html') %}
 {% endblock %}
 
 {% block body %}
 <div class="container mt-4">
+
     <h2>Statistiques du Stock</h2>
     <br>
 
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="card text-center">
-                <div class="card-header text-white" style="background-color: #df9fcb;">
+                <div class="card-header text-white" style="background-color:#df9fcb;">
                     <h5 class="mb-0">Coût Total du Stock</h5>
                 </div>
                 <div class="card-body">
-                    <h3 style="color: #df9fcb;"><strong>{{ "%.2f"|format(totaux.cout_total_stock) }} €</strong></h3>
+                    <h3 style="color:#df9fcb;">
+                        <strong>{{ "%.2f"|format(totaux.cout_total_stock) }} €</strong>
+                    </h3>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="card text-center">
-                <div class="card-header text-white" style="background-color: #5b89d1;">
+                <div class="card-header text-white" style="background-color:#5b89d1;">
                     <h5 class="mb-0">Nombre Total d'Articles</h5>
                 </div>
                 <div class="card-body">
-                    <h3 style="color: #5b89d1;"><strong>{{ totaux.nombre_total_articles }}</strong></h3>
+                    <h3 style="color:#5b89d1;">
+                        <strong>{{ totaux.nombre_total_articles }}</strong>
+                    </h3>
                 </div>
             </div>
         </div>
     </div>
 
     <h4 class="mb-3">Répartition par Type de Pneu</h4>
+
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>
-                <th>Type d'article (ID)</th>
-                <th>Nombre d'articles en stock</th>
+                <th>Type d'article</th>
+                <th>Quantité</th>
                 <th>Coût du stock</th>
             </tr>
         </thead>
         <tbody>
-        {% if stats_par_type | length >= 1 %}
-            {% for stat in stats_par_type %}
-               <tr>
-                      <td>
-                          <span class="badge rounded-pill" style="background-color:#828dff; color:white;">{{ stat.type_id }}</span>
-                          {{ stat.type_pneu }}
-                      </td>
-                      <td>
-                          {% if stat.nombre_articles == 0 %}
-                              <span class="text-muted">pas d'article</span>
-                          {% else %}
-                              <span class="badge rounded-pill" style="background-color:#ff8cc1; color:white;">{{ stat.nombre_articles }}</span>
-                          {% endif %}
-                      </td>
-                      <td>
-                          {% if stat.cout_stock == 0 %}
-                              0 €
-                          {% else %}
-                              <strong>{{ "%.2f"|format(stat.cout_stock) }} €</strong>
-                          {% endif %}
-                      </td>
-               </tr>
-            {% endfor %}
+        {% for stat in stats_par_type %}
+            <tr>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#828dff;color:white;">
+                        {{ stat.type_id }}
+                    </span>
+                    {{ stat.type_pneu }}
+                </td>
+                <td>
+                    {% if stat.nombre_articles == 0 %}
+                        <span class="text-muted">pas d'article</span>
+                    {% else %}
+                        <span class="badge rounded-pill" style="background-color:#ff8cc1;color:white;">
+                            {{ stat.nombre_articles }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if stat.cout_stock == 0 %}
+                        0 €
+                    {% else %}
+                        <strong>{{ "%.2f"|format(stat.cout_stock) }} €</strong>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
             <tr class="table-light fw-bold">
                 <td>TOTAL</td>
-                <td><span class="badge rounded-pill" style="background-color:#ff8cc1; color:white;">{{ totaux.nombre_total_articles }}</span></td>
-                <td><span class="badge rounded-pill" style="background-color:#ff878c; color:white;"><strong>{{ "%.2f"|format(totaux.cout_total_stock) }} €</strong></span></td>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#ff8cc1;color:white;">
+                        {{ totaux.nombre_total_articles }}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#ff878c;color:white;">
+                        {{ "%.2f"|format(totaux.cout_total_stock) }} €
+                    </span>
+                </td>
             </tr>
-        {% else %}
-            <tr><td colspan="3">Aucune donnée</td></tr>
-        {% endif %}
         </tbody>
     </table>
 
     <h4 class="mb-3 mt-5">Analyse des Prix par Type</h4>
+
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>
@@ -88,22 +104,34 @@
             </tr>
         </thead>
         <tbody>
-        {% if prix_moyens | length >= 1 %}
-            {% for prix in prix_moyens %}
-               <tr>
-                      <td>{{ prix.type_pneu }}</td>
-                      <td><span class="badge rounded-pill" style="background-color:#2979c3; color:white;">{{ "%.2f"|format(prix.prix_moyen) }} €</span></td>
-                      <td><span class="badge rounded-pill" style="background-color:#ff374f; color:white;">{{ "%.2f"|format(prix.prix_min) }} €</span></td>
-                      <td><span class="badge rounded-pill" style="background-color:#b1dd8e; color:white;">{{ "%.2f"|format(prix.prix_max) }} €</span></td>
-               </tr>
-            {% endfor %}
-        {% else %}
-            <tr><td colspan="4">Aucune donnée</td></tr>
-        {% endif %}
+        {% for prix in prix_moyens %}
+            <tr>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#828dff;color:white;">
+                        {{ prix.type_id }}
+                    </span>
+                    {{ prix.type_pneu }}
+                </td>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#2979c3;color:white;">
+                        {{ "%.2f"|format(prix.prix_moyen) }} €
+                    </span>
+                </td>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#ff374f;color:white;">
+                        {{ "%.2f"|format(prix.prix_min) }} €
+                    </span>
+                </td>
+                <td>
+                    <span class="badge rounded-pill" style="background-color:#b1dd8e;color:white;">
+                        {{ "%.2f"|format(prix.prix_max) }} €
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
-    <br>
     <a href="/pneu-velo/show" class="btn btn-secondary mb-3">Retour</a>
 </div>
 {% endblock %}
