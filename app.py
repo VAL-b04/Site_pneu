@@ -139,9 +139,13 @@ def show_type_pneu():
     mycursor = get_db().cursor()
 
     sql = '''
-    SELECT id_type_pneu AS id,
-    libelle_type AS libelleType
-    FROM type_pneu_velo ORDER BY id_type_pneu;
+    SELECT t.id_type_pneu AS id,
+    t.libelle_type AS libelleType,
+    COUNT(p.id_pneu_velo) AS nbUtilisations
+    FROM type_pneu_velo t
+    LEFT JOIN pneu_velo p ON t.id_type_pneu = p.type_pneu_id
+    GROUP BY t.id_type_pneu, t.libelle_type
+    ORDER BY t.id_type_pneu;
     '''
     mycursor.execute(sql)
     types_pneu = mycursor.fetchall()
@@ -198,7 +202,6 @@ def delete_type_pneu():
 
         return render_template('type_pneu/delete_cascade.html', type=type_info, pneus=pneus_associes)
 
-    # Si aucun pneu associé, suppression normale
     sql_delete = 'DELETE FROM type_pneu_velo WHERE id_type_pneu = %s'
     mycursor.execute(sql_delete, (id_type,))
     get_db().commit()
@@ -275,18 +278,20 @@ def show_pneu_velo():
     mycursor = get_db().cursor()
 
     sql = '''
-    SELECT id_pneu_velo AS id,
-    nom_pneu AS nomPneu,
-    fabricant, 
-    modele_pneu AS modelePneu,
-    largeur_pneu AS largeurPneu, 
-    diametre_jante AS diametreJante,
-    dimension,
-    type_pneu_id AS typePneu_id,
-    prix_pneu AS prixPneu, 
-    image
-    FROM pneu_velo
-    ORDER BY id_pneu_velo;
+    SELECT p.id_pneu_velo AS id,
+    p.nom_pneu AS nomPneu,
+    p.fabricant, 
+    p.modele_pneu AS modelePneu,
+    p.largeur_pneu AS largeurPneu, 
+    p.diametre_jante AS diametreJante,
+    p.dimension,
+    p.type_pneu_id AS typePneu_id,
+    t.libelle_type AS libelleType,
+    p.prix_pneu AS prixPneu, 
+    p.image
+    FROM pneu_velo p
+    JOIN type_pneu_velo t ON p.type_pneu_id = t.id_type_pneu
+    ORDER BY p.id_pneu_velo;
     '''
     mycursor.execute(sql)
     pneus = mycursor.fetchall()
@@ -442,37 +447,38 @@ def etat_pneu_velo():
     mycursor = get_db().cursor()
 
     mycursor.execute('''
-    SELECT 
-        COUNT(*) AS nombre_total_articles,
-        COALESCE(SUM(prix_pneu),0) AS cout_total_stock
-    FROM pneu_velo;
+        SELECT 
+            COUNT(*) AS nombre_total_articles,
+            COALESCE(SUM(prix_pneu), 0) AS cout_total_stock
+        FROM pneu_velo;
     ''')
     totaux = mycursor.fetchone()
 
     mycursor.execute('''
-    SELECT 
-        t.id_type_pneu AS type_id,
-        t.libelle_type AS type_pneu,
-        COUNT(p.id_pneu_velo) AS nombre_articles,
-        COALESCE(SUM(p.prix_pneu), 0) AS cout_stock
-    FROM type_pneu_velo t
-    LEFT JOIN pneu_velo p ON p.type_pneu_id = t.id_type_pneu
-    GROUP BY t.id_type_pneu, t.libelle_type
-    ORDER BY t.libelle_type;
+        SELECT 
+            t.id_type_pneu AS type_id,
+            t.libelle_type AS type_pneu,
+            COUNT(p.id_pneu_velo) AS nombre_articles,
+            COALESCE(SUM(p.prix_pneu), 0) AS cout_stock
+        FROM type_pneu_velo t
+        LEFT JOIN pneu_velo p ON p.type_pneu_id = t.id_type_pneu
+        GROUP BY t.id_type_pneu, t.libelle_type
+        ORDER BY t.libelle_type;
     ''')
     stats_par_type = mycursor.fetchall()
 
     mycursor.execute('''
-    SELECT 
-        t.libelle_type AS type_pneu,
-        COALESCE(AVG(p.prix_pneu),0) AS prix_moyen,
-        COALESCE(MIN(p.prix_pneu),0) AS prix_min,
-        COALESCE(MAX(p.prix_pneu),0) AS prix_max
-    FROM type_pneu_velo t
-    LEFT JOIN pneu_velo p ON p.type_pneu_id = t.id_type_pneu
-    GROUP BY t.id_type_pneu, t.libelle_type
-    HAVING COUNT(p.id_pneu_velo) > 0
-    ORDER BY prix_moyen DESC;
+        SELECT 
+            t.id_type_pneu AS type_id,
+            t.libelle_type AS type_pneu,
+            COALESCE(AVG(p.prix_pneu), 0) AS prix_moyen,
+            COALESCE(MIN(p.prix_pneu), 0) AS prix_min,
+            COALESCE(MAX(p.prix_pneu), 0) AS prix_max
+        FROM type_pneu_velo t
+        LEFT JOIN pneu_velo p ON p.type_pneu_id = t.id_type_pneu
+        GROUP BY t.id_type_pneu, t.libelle_type
+        HAVING COUNT(p.id_pneu_velo) > 0
+        ORDER BY prix_moyen DESC;
     ''')
     prix_moyens = mycursor.fetchall()
 
